@@ -26,6 +26,7 @@ bug_tracker/
 │── manage.py # Django CLI tool
 │── requirements.txt # Dependencies list
 │── README.md # This file
+│── LICENCE # Licence file
 
 ## 🛠 Installation & Setup
 
