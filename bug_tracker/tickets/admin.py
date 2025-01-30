@@ -5,5 +5,6 @@ class TicketAdmin(admin.ModelAdmin):
     list_display = ('title', 'status', 'priority', 'created_by', 'assigned_to', 'created_at', 'updated_at')
     list_filter = ('status', 'priority', 'created_by', 'assigned_to')
     search_fields = ('title', 'description')
+    ordering = ('-created_at',)
 
 admin.site.register(Ticket, TicketAdmin)
