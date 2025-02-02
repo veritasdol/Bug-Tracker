@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>{{ ticket.title }}</h2>
+    <p><strong>Status:</strong> {{ ticket.get_status_display }}</p>
+    <p><strong>Priority:</strong> {{ ticket.get_priority_display }}</p>
+    <p><strong>Description:</strong> {{ ticket.description }}</p>
+    <p><strong>Created by:</strong> {{ ticket.created_by.username }}</p>
+    <p>
+      <strong>Assigned to:</strong> {% if ticket.assigned_to %}{{ ticket.assigned_to.username }}{% else %}Unassigned{% endif %}
+    </p>
+    <p><strong>Created at:</strong> {{ ticket.created_at }}</p>
+    <p><strong>Updated at:</strong> {{ ticket.updated_at }}</p>
+
+    <a href="{% url 'ticket_list' %}">Back to Ticket List</a>
+    {% if request.user.role == "admin" or request.user == ticket.assigned_to %}
+    <a href="{% url 'update_ticket' ticket.id %}">Edit Ticket</a>
+    {% endif %}
+  </body>
+</html>

@@ -56,3 +56,8 @@ def delete_ticket_view(request, ticket_id):
         ticket.delete()
         return redirect('ticket_list')
     return render(request, "tickets/ticket_confirm_delete.html", {"ticket": ticket})
+
+@login_required
+def ticket_detail_view(request, ticket_id):
+    ticket = get_object_or_404(Ticket, id=ticket_id, company=request.user.company)
+    return render(request, "tickets/ticket_detail.html", {"ticket": ticket})

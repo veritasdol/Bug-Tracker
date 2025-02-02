@@ -11,7 +11,7 @@
     <ul>
       {% for ticket in tickets %}
       <li>
-        <strong>{{ ticket.title }}</strong> - {{ ticket.status }} - {{ ticket.priority }}
+        <strong><a href="{% url 'ticket_detail' ticket.id %}">{{ ticket.title }}</a></strong> - {{ ticket.status }} - {{ ticket.priority }}
         <br />
         Assigned to: {% if ticket.assigned_to %}{{ ticket.assigned_to.username}}{% else %}Unassigned{% endif %}
         <br />
