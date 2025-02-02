@@ -9,7 +9,7 @@ from users.decorators import role_required
 @role_required(allowed_roles=['admin', 'tester'])
 def create_ticket_view(request):
     if request.method == "POST":
-        form = TicketForm(request.POST)
+        form = TicketForm(request.POST, user=request.user)
         if form.is_valid():
             ticket = form.save(commit=False)
             ticket.created_by = request.user
@@ -17,7 +17,7 @@ def create_ticket_view(request):
             ticket.save()
             return redirect('ticket_list')
     else:
-        form = TicketForm()
+        form = TicketForm(user=request.user)
     return render(request, "tickets/ticket_form.html", {"form": form})
 
 @login_required
@@ -32,16 +32,19 @@ def ticket_list_view(request):
     return render(request, "tickets/ticket_list.html", {"tickets": tickets})
 
 @login_required
-@role_required(allowed_roles=['admin', 'developer'])
 def update_ticket_view(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id, company=request.user.company)
+
+    if request.user.role != 'admin' and request.user != ticket.assigned_to:
+        return redirect('ticket_list')
+
     if request.method == "POST":
-        form = TicketForm(request.POST, instance=ticket)
+        form = TicketForm(request.POST, instance=ticket, user=request.user)
         if form.is_valid():
             ticket = form.save()
             return redirect('ticket_list')
     else:
-        form = TicketForm(instance=ticket)
+        form = TicketForm(instance=ticket, user=request.user)
     return render(request, "tickets/ticket_form.html", {"form": form})
 
 @login_required

@@ -11,8 +11,14 @@
     <ul>
       {% for ticket in tickets %}
       <li>
-        {{ ticket.title }} - {{ ticket.status }} - {{ ticket.priority }}
+        <strong>{{ ticket.title }}</strong> - {{ ticket.status }} - {{
+        ticket.priority }}
+        <br />
+        Assigned to: {% if ticket.assigned_to %}{{ ticket.assigned_to.username
+        }}{% else %}Unassigned{% endif %}
+        <br />
         <a href="{% url 'update_ticket' ticket.id %}">Edit</a>
+        {% if request.user.role == "admin" %}
         <form
           method="post"
           action="{% url 'delete_ticket' ticket.id %}"
@@ -21,6 +27,7 @@
           {% csrf_token %}
           <button type="submit">Delete</button>
         </form>
+        {% endif %}
       </li>
       {% endfor %}
     </ul>
