@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ticket List</title>
+  </head>
+  <body>
+    <h2>Ticket List</h2>
+    <a href="{% url 'create_ticket' %}">Create Ticket</a>
+    <ul>
+      {% for ticket in tickets %}
+      <li>
+        {{ ticket.title }} - {{ ticket.status }} - {{ ticket.priority }}
+        <a href="{% url 'update_ticket' ticket.id %}">Edit</a>
+        <form
+          method="post"
+          action="{% url 'delete_ticket' ticket.id %}"
+          style="display: inline"
+        >
+          {% csrf_token %}
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
