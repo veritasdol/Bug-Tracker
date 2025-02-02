@@ -18,3 +18,18 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
+    
+class AddUserForm(UserCreationForm):
+    email = forms.EmailField()
+    role = forms.ChoiceField(choices=[("developer", "Developer"), ("tester", "Tester")])
+
+    class Meta:
+        model = User
+        fields = ["username", "email", "role", "password1", "password2"]
+
+    def save(self, admin_user, commit=True):
+        user = super().save(commit=False)
+        user.company = admin_user.company
+        if commit:
+            user.save()
+        return user
